@@ -11,6 +11,6 @@ This uses vcpkg and CMake to make building a C++ project with Arrow easy.
 
 ```
 git clone https://github.com/microsoft/vcpkg
-cmake --preset vcpkg-ninja .
-cmake --build out/build/vcpkg-ninja -j8
+cmake --preset debug .
+cmake --build out/build/debug -j8
 ```
