@@ -2,10 +2,10 @@
     "name": "arrow-example",
     "version-string": "0.1.0",
     "dependencies": [
-        "arrow"
-    ],
-    "overrides": [
-        { "name": "arrow", "version": "6.0.0" }
+        {
+            "name": "arrow",
+            "features": [ "jemalloc", "parquet" ]
+        }
     ],
     "builtin-baseline": "b47d6ce6e32fb9efb76e6e7e5f9c849298f3557a"
 }

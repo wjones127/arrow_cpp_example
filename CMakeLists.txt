@@ -2,9 +2,8 @@ cmake_minimum_required(VERSION 3.0)
 
 project(ArrowMinimalExample)
 
-# option(ARROW_LINK_SHARED "Link to the Arrow shared library" ON)
-
-find_package(Arrow REQUIRED)
+find_package(Arrow CONFIG REQUIRED)
+find_package(Parquet CONFIG REQUIRED)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -25,5 +24,14 @@ endif()
 # else()
   set(THREADS_PREFER_PTHREAD_FLAG ON)
   find_package(Threads REQUIRED)
-  target_link_libraries(arrow_example PRIVATE arrow_static parquet brotlicommon brotlidec brotlienc lz4 thrift utf8proc Threads::Threads)
+  target_link_libraries(arrow_example PRIVATE ${ARROW_LIBRARIES} ${PARQUET_LIBRARIES} brotlicommon brotlidec brotlienc lz4 thrift utf8proc Threads::Threads)
+  # target_link_libraries(arrow_example PRIVATE arrow_static parquet brotlicommon brotlidec brotlienc lz4 thrift utf8proc Threads::Threads)
+  # target_link_libraries(arrow_example PRIVATE re2::re2 arrow_static parquet arrow_bundled_dependencies)
 # endif()
+
+if(MSVC)
+  target_compile_options(arrow_example PRIVATE /W4 /WX)
+else()
+  target_compile_options(arrow_example PRIVATE -Wall -Wextra -Wpedantic -Werror)
+endif()
+    

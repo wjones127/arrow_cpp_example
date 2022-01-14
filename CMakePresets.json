@@ -17,6 +17,7 @@
         },
         {
             "name": "release",
+            "inherits": ["debug"],
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }

@@ -20,24 +20,21 @@ arrow::Status inner_main() {
     std::shared_ptr<arrow::Schema> readSchema;
     ARROW_RETURN_NOT_OK(arrow_reader->GetSchema(&readSchema));
     std::shared_ptr<arrow::Table> table;
-    std::vector<int> indicesToGet;
+
     ARROW_RETURN_NOT_OK(arrow_reader->ReadTable(&table));
-    auto recordListCol1 = arrow::Table::Make(arrow::schema({table->schema()->GetFieldByName("recordList")}),
-                                             {table->GetColumnByName("recordList")});
+    cout << table->GetColumnByName("recordList")->ToString() << endl;
+
     for (int i = 0; i < 20; ++i)
     {
         cout << "data reread operation number = " + std::to_string(i) << endl;
         std::shared_ptr<arrow::Table> table2;
         ARROW_RETURN_NOT_OK(arrow_reader->ReadTable(&table2));
-        auto recordListCol2 = arrow::Table::Make(arrow::schema({table2->schema()->GetFieldByName("recordList")}),
-                                                 {table2->GetColumnByName("recordList")});
-        bool equals = recordListCol1->Equals(*recordListCol2);
+        bool equals = table->GetColumnByName("recordList")->Equals(table2->GetColumnByName("recordList"));
         if (!equals)
         {
-            cout << recordListCol1->ToString() << endl;
             cout << endl
                  << "new table" << endl;
-            cout << recordListCol2->ToString() << endl;
+            cout << table2->GetColumnByName("recordList")->ToString() << endl;
             throw std::runtime_error("Subsequent re-read failure ");
         }
     }
